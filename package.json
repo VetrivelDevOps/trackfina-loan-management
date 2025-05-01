@@ -1,0 +1,17 @@
+{
+  "name": "trackfina-loan-management",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "client": "npm start --prefix client",
+    "server": "npm start --prefix server",
+    "dev": "concurrently \"npm run client\" \"npm run server\"",
+    "build": "npm run build --prefix client"
+  },
+  "dependencies": {
+    "concurrently": "^6.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^4.0.0"
+  }
+}
