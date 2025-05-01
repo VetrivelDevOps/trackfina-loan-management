@@ -52,20 +52,20 @@ const Dashboard = () => {
       <div className="p-6">
         <h1 className="text-2xl font-bold text-gray-900 mb-6">Dashboard</h1>
         
-        {/* Stats Cards - Updated with different background colors */}
+        {/* Stats Cards - Updated with darker background colors */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          {/* Collections Card - Light Blue */}
-          <div className="bg-blue-50 rounded-lg shadow-sm p-6 flex items-center">
-            <div className="p-3 rounded-full bg-blue-100 text-blue-600 mr-4">
+          {/* Collections Card - Blue */}
+          <div className="bg-blue-600 rounded-lg shadow-sm p-6 flex items-center">
+            <div className="p-3 rounded-full bg-white bg-opacity-25 text-white mr-4">
               <svg className="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path>
               </svg>
             </div>
             <div>
-              <p className="text-sm text-gray-500 font-medium">Total Collections</p>
+              <p className="text-sm text-blue-100 font-medium">Total Collections</p>
               <div className="flex items-baseline">
-                <p className="text-2xl font-bold text-gray-900">₹{stats.totalCollections.toLocaleString()}</p>
-                <span className="ml-2 text-sm text-green-500 font-medium flex items-center">
+                <p className="text-2xl font-bold text-white">₹{stats.totalCollections.toLocaleString()}</p>
+                <span className="ml-2 text-sm text-blue-100 font-medium flex items-center">
                   <svg className="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                     <path fillRule="evenodd" d="M12 7a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0V8.414l-4.293 4.293a1 1 0 01-1.414 0L8 10.414l-4.293 4.293a1 1 0 01-1.414-1.414l5-5a1 1 0 011.414 0L11 10.586 14.586 7H12z" clipRule="evenodd"></path>
                   </svg>12.5%
@@ -74,18 +74,18 @@ const Dashboard = () => {
             </div>
           </div>
 
-          {/* Pending Collections Card - Light Orange */}
-          <div className="bg-orange-50 rounded-lg shadow-sm p-6 flex items-center">
-            <div className="p-3 rounded-full bg-orange-100 text-orange-600 mr-4">
+          {/* Pending Collections Card - Orange */}
+          <div className="bg-orange-600 rounded-lg shadow-sm p-6 flex items-center">
+            <div className="p-3 rounded-full bg-white bg-opacity-25 text-white mr-4">
               <svg className="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
               </svg>
             </div>
             <div>
-              <p className="text-sm text-gray-500 font-medium">Pending Collections</p>
+              <p className="text-sm text-orange-100 font-medium">Pending Collections</p>
               <div className="flex items-baseline">
-                <p className="text-2xl font-bold text-gray-900">{stats.pendingCollections}</p>
-                <span className="ml-2 text-sm text-green-500 font-medium flex items-center">
+                <p className="text-2xl font-bold text-white">{stats.pendingCollections}</p>
+                <span className="ml-2 text-sm text-orange-100 font-medium flex items-center">
                   <svg className="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                     <path fillRule="evenodd" d="M12 7a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0V8.414l-4.293 4.293a1 1 0 01-1.414 0L8 10.414l-4.293 4.293a1 1 0 01-1.414-1.414l5-5a1 1 0 011.414 0L11 10.586 14.586 7H12z" clipRule="evenodd"></path>
                   </svg>4.3%
@@ -94,18 +94,18 @@ const Dashboard = () => {
             </div>
           </div>
 
-          {/* Active Agents Card - Light Green */}
-          <div className="bg-green-50 rounded-lg shadow-sm p-6 flex items-center">
-            <div className="p-3 rounded-full bg-green-100 text-green-600 mr-4">
+          {/* Active Agents Card - Green */}
+          <div className="bg-green-600 rounded-lg shadow-sm p-6 flex items-center">
+            <div className="p-3 rounded-full bg-white bg-opacity-25 text-white mr-4">
               <svg className="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
               </svg>
             </div>
             <div>
-              <p className="text-sm text-gray-500 font-medium">Active Agents</p>
+              <p className="text-sm text-green-100 font-medium">Active Agents</p>
               <div className="flex items-baseline">
-                <p className="text-2xl font-bold text-gray-900">{stats.activeAgents}</p>
-                <span className="ml-2 text-sm text-green-500 font-medium flex items-center">
+                <p className="text-2xl font-bold text-white">{stats.activeAgents}</p>
+                <span className="ml-2 text-sm text-green-100 font-medium flex items-center">
                   <svg className="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                     <path fillRule="evenodd" d="M12 7a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0V8.414l-4.293 4.293a1 1 0 01-1.414 0L8 10.414l-4.293 4.293a1 1 0 01-1.414-1.414l5-5a1 1 0 011.414 0L11 10.586 14.586 7H12z" clipRule="evenodd" />
                   </svg>
@@ -115,18 +115,18 @@ const Dashboard = () => {
             </div>
           </div>
 
-          {/* Total Customers Card - Light Purple */}
-          <div className="bg-purple-50 rounded-lg shadow-sm p-6 flex items-center">
-            <div className="p-3 rounded-full bg-purple-100 text-purple-600 mr-4">
+          {/* Total Customers Card - Purple */}
+          <div className="bg-purple-600 rounded-lg shadow-sm p-6 flex items-center">
+            <div className="p-3 rounded-full bg-white bg-opacity-25 text-white mr-4">
               <svg className="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
               </svg>
             </div>
             <div>
-              <p className="text-sm text-gray-500 font-medium">Total Customers</p>
+              <p className="text-sm text-purple-100 font-medium">Total Customers</p>
               <div className="flex items-baseline">
-                <p className="text-2xl font-bold text-gray-900">{stats.totalCustomers}</p>
-                <span className="ml-2 text-sm text-green-500 font-medium flex items-center">
+                <p className="text-2xl font-bold text-white">{stats.totalCustomers}</p>
+                <span className="ml-2 text-sm text-purple-100 font-medium flex items-center">
                   <svg className="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                     <path fillRule="evenodd" d="M12 7a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0V8.414l-4.293 4.293a1 1 0 01-1.414 0L8 10.414l-4.293 4.293a1 1 0 01-1.414-1.414l5-5a1 1 0 011.414 0L11 10.586 14.586 7H12z" clipRule="evenodd" />
                   </svg>

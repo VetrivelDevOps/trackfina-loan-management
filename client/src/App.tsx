@@ -7,7 +7,10 @@ import Register from './pages/auth/Register';
 import Dashboard from './pages/Dashboard';
 import PrivateRoute from './components/PrivateRoute';
 import Customers from "./pages/customers/Customers";
+import CustomerDetail from "./pages/customers/CustomerDetail";
+import CustomerForm from "./pages/customers/CustomerForm";
 import Loans from "./pages/loans/Loans";
+import LoanDetail from "./pages/loans/LoanDetail";
 import Payments from "./pages/payments/Payments";
 import Reports from "./pages/reports/Reports";
 import Settings from "./pages/settings/Settings";
@@ -22,6 +25,8 @@ import { lazy, Suspense } from 'react';
 const ForgotPassword = lazy(() => import('./pages/auth/ForgotPassword'));
 const TermsOfService = lazy(() => import('./pages/legal/TermsOfService'));
 const PrivacyPolicy = lazy(() => import('./pages/legal/PrivacyPolicy'));
+const LoanForm = lazy(() => import('./pages/loans/LoanForm'));
+const LoanPayment = lazy(() => import('./pages/loans/LoanPayment'));
 
 // Loading component for Suspense fallback
 const LoadingSpinner = () => (
@@ -71,15 +76,58 @@ function App() {
               </PrivateRoute>
             } />
             
+            {/* Customer Routes */}
             <Route path="/customers" element={
               <PrivateRoute>
                 <Customers />
               </PrivateRoute>
             } />
+            <Route path="/customers/new" element={
+              <PrivateRoute>
+                <CustomerForm />
+              </PrivateRoute>
+            } />
+            <Route path="/customers/:id" element={
+              <PrivateRoute>
+                <CustomerDetail />
+              </PrivateRoute>
+            } />
+            <Route path="/customers/:id/edit" element={
+              <PrivateRoute>
+                <CustomerForm />
+              </PrivateRoute>
+            } />
             
+            {/* Loan Routes */}
             <Route path="/loans" element={
               <PrivateRoute>
                 <Loans />
+              </PrivateRoute>
+            } />
+            <Route path="/loans/new" element={
+              <PrivateRoute>
+                <Suspense fallback={<LoadingSpinner />}>
+                  <LoanForm />
+                </Suspense>
+              </PrivateRoute>
+            } />
+            <Route path="/loans/:id" element={
+              <PrivateRoute>
+                <LoanDetail />
+              </PrivateRoute>
+            } />
+            <Route path="/loans/:id/edit" element={
+              <PrivateRoute>
+                <Suspense fallback={<LoadingSpinner />}>
+                  <LoanForm />
+                </Suspense>
+              </PrivateRoute>
+            } />
+            <Route path="/loans/:id/payment" element={
+              <PrivateRoute>
+                <Suspense fallback={<LoadingSpinner />}>
+                  <LoanPayment />
+                </Suspense>
               </PrivateRoute>
             } />
             

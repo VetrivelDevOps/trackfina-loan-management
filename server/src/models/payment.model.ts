@@ -1,41 +1,44 @@
-import { Model, DataTypes } from 'sequelize';
-import { sequelize } from '../config/database';
+import { InferSelectModel } from "drizzle-orm";
+import { payments } from "../db/schema";
 
-export class Payment extends Model {
-  public id!: number;
-  public loanId!: number;
-  public amount!: number;
-  public paymentDate!: Date;
-  public createdAt!: Date;
-  public updatedAt!: Date;
+export enum PaymentMethod {
+  CASH = 'CASH',
+  BANK_TRANSFER = 'BANK_TRANSFER',
+  UPI = 'UPI',
+  CHEQUE = 'CHEQUE',
+  CARD = 'CARD',
+  OTHER = 'OTHER'
 }
 
-Payment.init(
-  {
-    id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true,
-    },
-    loanId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: 'loans',
-        key: 'id',
-      },
-    },
-    amount: {
-      type: DataTypes.DECIMAL(10, 2),
-      allowNull: false,
-    },
-    paymentDate: {
-      type: DataTypes.DATE,
-      allowNull: false,
-    },
+// Infer model type from schema
+export type Payment = InferSelectModel<typeof payments>;
+
+// Export model with additional methods if needed
+export const PaymentModel = {
+  // Add business logic methods here
+  
+  // Example: Validate payment amount
+  validatePaymentAmount(payment: Payment, emiAmount: number): boolean {
+    return Number(payment.amount) <= emiAmount;
   },
-  {
-    sequelize,
-    tableName: 'payments',
+  
+  // Example: Format transaction reference
+  formatTransactionReference(payment: Payment): string {
+    if (!payment.transactionReference) {
+      return 'N/A';
+    }
+    
+    switch (payment.paymentMethod) {
+      case PaymentMethod.CHEQUE:
+        return `Cheque #${payment.transactionReference}`;
+      case PaymentMethod.UPI:
+        return `UPI ID: ${payment.transactionReference}`;
+      case PaymentMethod.BANK_TRANSFER:
+        return `Ref: ${payment.transactionReference}`;
+      default:
+        return payment.transactionReference;
+    }
   }
-);
+};
+
+export default Payment;
