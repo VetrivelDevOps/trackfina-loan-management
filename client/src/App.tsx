@@ -1,9 +1,11 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { AuthProvider } from "./contexts/AuthContext";
-import { CompanyProvider } from "./contexts/CompanyContext";
-import ProtectedRoute from "./components/ProtectedRoute";
-import Login from "./pages/auth/Login";
-import Dashboard from "./pages/Dashboard";
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { AuthProvider } from './contexts/AuthContext';
+import { CompanyProvider } from './contexts/CompanyContext';
+import Login from './pages/auth/Login';
+import Register from './pages/auth/Register';
+import Dashboard from './pages/Dashboard';
+import PrivateRoute from './components/PrivateRoute';
 import Customers from "./pages/customers/Customers";
 import Loans from "./pages/loans/Loans";
 import Payments from "./pages/payments/Payments";
@@ -14,51 +16,90 @@ import BranchesSettings from "./pages/settings/Branches";
 import UsersSettings from "./pages/settings/Users";
 import CompaniesSettings from "./pages/settings/Companies";
 import NotFound from "./pages/NotFound";
+import { lazy, Suspense } from 'react';
+
+// Lazy load non-critical pages
+const ForgotPassword = lazy(() => import('./pages/auth/ForgotPassword'));
+const TermsOfService = lazy(() => import('./pages/legal/TermsOfService'));
+const PrivacyPolicy = lazy(() => import('./pages/legal/PrivacyPolicy'));
+
+// Loading component for Suspense fallback
+const LoadingSpinner = () => (
+  <div className="min-h-screen flex items-center justify-center">
+    <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+  </div>
+);
 
 function App() {
   return (
-    <AuthProvider>
-      <CompanyProvider>
-        <BrowserRouter>
+    <Router>
+      <AuthProvider>
+        <CompanyProvider>
           <Routes>
+            {/* Public Routes */}
             <Route path="/login" element={<Login />} />
-            <Route path="/" element={<Navigate to="/dashboard" replace />} />
+            <Route path="/register" element={<Register />} />
+            <Route 
+              path="/forgot-password" 
+              element={
+                <Suspense fallback={<LoadingSpinner />}>
+                  <ForgotPassword />
+                </Suspense>
+              } 
+            />
+            <Route 
+              path="/terms-of-service" 
+              element={
+                <Suspense fallback={<LoadingSpinner />}>
+                  <TermsOfService />
+                </Suspense>
+              } 
+            />
+            <Route 
+              path="/privacy-policy" 
+              element={
+                <Suspense fallback={<LoadingSpinner />}>
+                  <PrivacyPolicy />
+                </Suspense>
+              } 
+            />
             
+            {/* Protected Routes */}
             <Route path="/dashboard" element={
-              <ProtectedRoute>
+              <PrivateRoute>
                 <Dashboard />
-              </ProtectedRoute>
+              </PrivateRoute>
             } />
             
             <Route path="/customers" element={
-              <ProtectedRoute>
+              <PrivateRoute>
                 <Customers />
-              </ProtectedRoute>
+              </PrivateRoute>
             } />
             
             <Route path="/loans" element={
-              <ProtectedRoute>
+              <PrivateRoute>
                 <Loans />
-              </ProtectedRoute>
+              </PrivateRoute>
             } />
             
             <Route path="/payments" element={
-              <ProtectedRoute>
+              <PrivateRoute>
                 <Payments />
-              </ProtectedRoute>
+              </PrivateRoute>
             } />
             
             <Route path="/reports" element={
-              <ProtectedRoute>
+              <PrivateRoute>
                 <Reports />
-              </ProtectedRoute>
+              </PrivateRoute>
             } />
             
             {/* Settings routes with nested routes */}
             <Route path="/settings" element={
-              <ProtectedRoute>
+              <PrivateRoute>
                 <Settings />
-              </ProtectedRoute>
+              </PrivateRoute>
             }>
               <Route index element={<GeneralSettings />} />
               <Route path="general" element={<GeneralSettings />} />
@@ -67,11 +108,16 @@ function App() {
               <Route path="users" element={<UsersSettings />} />
             </Route>
             
-            <Route path="*" element={<NotFound />} />
+            {/* 404 Route */}
+            <Route path="/not-found" element={<NotFound />} />
+            
+            {/* Redirect to login by default */}
+            <Route path="/" element={<Navigate to="/login" />} />
+            <Route path="*" element={<Navigate to="/not-found" />} />
           </Routes>
-        </BrowserRouter>
-      </CompanyProvider>
-    </AuthProvider>
+        </CompanyProvider>
+      </AuthProvider>
+    </Router>
   );
 }
 

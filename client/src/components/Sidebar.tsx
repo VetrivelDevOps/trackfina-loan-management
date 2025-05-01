@@ -1,11 +1,21 @@
 import { Link, useLocation } from 'react-router-dom';
+import { useState } from 'react';  // Add this line
+import { useAuth } from '../contexts/AuthContext';
+import { useCompany } from '../contexts/CompanyContext';
+import CompanyLogoOrInitials from './CompanyLogoOrInitials'; // assuming we extract this component
 
 const Sidebar = () => {
   const location = useLocation();
+  const { user } = useAuth();
+  const { companies, branches, currentCompany, currentBranch, setCurrentCompany, setCurrentBranch } = useCompany();
+  const [companyDropdownOpen, setCompanyDropdownOpen] = useState(false);
+  const [branchDropdownOpen, setBranchDropdownOpen] = useState(false);
+  
   const isActive = (path: string) => location.pathname === path || location.pathname.startsWith(`${path}/`);
 
   return (
-    <div className="fixed left-0 top-0 w-64 h-full bg-[#1e3a8a] z-10">
+    <div className="fixed left-0 top-0 w-64 h-full bg-[#1e3a8a] z-10 flex flex-col">
+      {/* App Logo and Name */}
       <div className="h-16 flex items-center px-6 border-b border-blue-900">
         <Link to="/dashboard" className="flex items-center text-xl font-bold text-white">
           <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 mr-2" viewBox="0 0 24 24" fill="currentColor">
@@ -15,6 +25,85 @@ const Sidebar = () => {
         </Link>
       </div>
       
+      {/* Company Selector - ADDED HERE */}
+      <div className="p-4 border-b border-blue-900">
+        <div className="relative">
+          <button
+            type="button"
+            className="w-full bg-blue-800 hover:bg-blue-700 text-white rounded py-2 px-3 flex items-center justify-between"
+            onClick={() => setCompanyDropdownOpen(!companyDropdownOpen)}
+          >
+            {currentCompany && (
+              <div className="flex items-center">
+                <div className="flex-shrink-0 h-6 w-6 bg-blue-600 rounded-full flex items-center justify-center text-xs font-medium mr-2">
+                  {currentCompany.name.charAt(0)}
+                </div>
+                <span className="truncate">{currentCompany.name}</span>
+              </div>
+            )}
+            <svg className="w-5 h-5 ml-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+            </svg>
+          </button>
+          
+          {/* Company dropdown */}
+          {companyDropdownOpen && (
+            <div className="absolute left-0 w-full mt-1 rounded bg-blue-700 shadow-lg py-1 z-50">
+              {companies.map(company => (
+                <button
+                  key={company.id}
+                  className="w-full text-left px-4 py-2 text-sm text-white hover:bg-blue-600 flex items-center"
+                  onClick={() => {
+                    setCurrentCompany(company);
+                    setCompanyDropdownOpen(false);
+                  }}
+                >
+                  <div className="flex-shrink-0 h-5 w-5 bg-blue-500 rounded-full flex items-center justify-center text-xs mr-2">
+                    {company.name.charAt(0)}
+                  </div>
+                  <span className="truncate">{company.name}</span>
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+        
+        {/* Branch Selector */}
+        {currentCompany && (
+          <div className="relative mt-2">
+            <button
+              type="button"
+              className="w-full bg-blue-800 hover:bg-blue-700 text-white rounded py-2 px-3 flex items-center justify-between"
+              onClick={() => setBranchDropdownOpen(!branchDropdownOpen)}
+            >
+              <span className="truncate">{currentBranch?.name || 'Select Branch'}</span>
+              <svg className="w-5 h-5 ml-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+              </svg>
+            </button>
+            
+            {/* Branch dropdown */}
+            {branchDropdownOpen && branches.length > 0 && (
+              <div className="absolute left-0 w-full mt-1 rounded bg-blue-700 shadow-lg py-1 z-50">
+                {branches.map(branch => (
+                  <button
+                    key={branch.id}
+                    className="w-full text-left px-4 py-2 text-sm text-white hover:bg-blue-600"
+                    onClick={() => {
+                      setCurrentBranch(branch);
+                      setBranchDropdownOpen(false);
+                    }}
+                  >
+                    {branch.name}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+      
+      {/* The rest of your sidebar remains the same */}
       <div className="px-4 py-2 text-white text-xs font-semibold tracking-wider opacity-50 mt-6">
         ORGANIZATION
       </div>
@@ -174,13 +263,15 @@ const Sidebar = () => {
         </Link>
       </nav>
 
-      <div className="absolute bottom-0 left-0 w-full p-4 bg-[#15307c]">
+      <div className="mt-auto p-4 bg-[#15307c]">
         <div className="flex items-center">
           <div className="h-8 w-8 rounded-full bg-indigo-200 text-indigo-800 flex items-center justify-center font-semibold mr-2">
-            VD
+            {user?.firstName?.charAt(0) || 'V'}{user?.lastName?.charAt(0) || 'D'}
           </div>
           <div>
-            <div className="text-sm font-medium text-white">Vetrivel D</div>
+            <div className="text-sm font-medium text-white">
+              {user?.firstName || 'Vetrivel'} {user?.lastName || 'D'}
+            </div>
             <div className="text-xs text-blue-200">Company Admin</div>
           </div>
         </div>
